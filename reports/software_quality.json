@@ -1,0 +1,12 @@
+{
+  "tests": 244,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 244,
+  "seconds": 36.038,
+  "executed_at_utc": "2026-10-06T04:56:07.371599+00:00",
+  "python": "3.11.16",
+  "command": "python -m pytest -q --junitxml=<temporary XML>",
+  "note": "Software verification only; not model accuracy or production readiness."
+}

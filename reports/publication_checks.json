@@ -1,0 +1,58 @@
+{
+  "checked_at_utc": "2026-10-06T04:42:53.944758+00:00",
+  "authentication": "none",
+  "all_accessible": false,
+  "links": {
+    "slides": {
+      "url": "https://github.com/DlegendZ/DepoRank/raw/refs/heads/main/presentation/slides.pptx",
+      "status": 404,
+      "accessible_without_login": false,
+      "error": "HTTP Error 404: Not Found"
+    },
+    "dataset": {
+      "url": "https://github.com/DlegendZ/DepoRank/raw/refs/heads/main/data/raw/bank-additional-full.csv",
+      "status": 404,
+      "accessible_without_login": false,
+      "error": "HTTP Error 404: Not Found"
+    },
+    "source_code": {
+      "url": "https://github.com/DlegendZ/DepoRank",
+      "status": 200,
+      "resolved_url": "https://github.com/DlegendZ/DepoRank",
+      "accessible_without_login": true
+    }
+  },
+  "note": "HTTP access only. Also open/download in a signed-out browser. Unpushed files are not public.",
+  "references": [
+    {
+      "url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+      "status": 200,
+      "resolved_url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+      "accessible_without_login": true
+    },
+    {
+      "url": "https://doi.org/10.1016/j.dss.2014.03.001",
+      "status": 200,
+      "resolved_url": "https://linkinghub.elsevier.com/retrieve/pii/S016792361400061X",
+      "accessible_without_login": true
+    },
+    {
+      "url": "https://scikit-learn.org/stable/modules/calibration.html",
+      "status": 200,
+      "resolved_url": "https://scikit-learn.org/stable/modules/calibration.html",
+      "accessible_without_login": true
+    },
+    {
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "status": 200,
+      "resolved_url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "accessible_without_login": true
+    },
+    {
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+      "status": 200,
+      "resolved_url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+      "accessible_without_login": true
+    }
+  ]
+}
