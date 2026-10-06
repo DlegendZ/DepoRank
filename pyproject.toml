@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "deporank"
 version = "1.0.0"
-description = "Analisis dan prioritisasi kampanye deposito berjangka"
+description = "Term deposit campaign analysis and contact prioritization"
 requires-python = ">=3.11,<3.12"
 dependencies = [
   "pandas>=2.2,<3", "numpy>=1.26,<3", "scikit-learn>=1.6,<2",

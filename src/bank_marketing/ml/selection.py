@@ -55,7 +55,7 @@ def baseline_reports(path, split, data, ranges):
     prior = save_evaluation(path, split, "dummy_prior", y, p, 0.5, row_ids)
     random_scores = np.random.default_rng(42).random(len(y))
     ranking = save_evaluation(path, split, "random_ranking", y, random_scores, 0.5, row_ids)
-    ranking["note"] = "Ranking acak seed=42; scores bukan probabilitas. Metrik probabilitas/classification N/A."
+    ranking["note"] = "Random ranking with seed=42; scores are not probabilities. Probability and classification metrics are N/A."
     for key in ("brier_score", "precision", "recall", "f1", "accuracy", "threshold"):
         ranking["metrics"][key] = None
         ranking["metrics"]["reason_codes"][key] = "RANDOM_RANKING_NOT_PROBABILITY"

@@ -45,8 +45,8 @@ def interpret_selection(run_id, root="artifacts"):
                            "metrics": evaluation["metrics"], "calibration": evaluation["curves"]["calibration"]})
     report = {"run_id": run_id, "model_id": ref.model_id, "split": "selection", "range": ranges["selection"],
               "created_at_utc": utc_now(), "permutation_importance": features, "subgroups": groups,
-              "notes": ["Importance termasuk nilai negatif; korelasi fitur membatasi interpretasi; bukan sebab-akibat.",
-                        "Subgroup n<100 memiliki insufficient evidence. Metrik terbatas tidak menjamin fairness.",
-                        "Hanya selection digunakan; tidak mengubah fitur, winner, threshold atau test baseline."]}
+              "notes": ["Importance includes negative values; correlated features limit interpretation. These are not causal effects.",
+                        "Subgroups with n<100 have insufficient evidence. Limited metrics do not establish fairness.",
+                        "Only selection data is used; features, winner, thresholds, and test baseline remain unchanged."]}
     write_json(path / "interpretation.json", report)
     return report

@@ -41,15 +41,15 @@ def _validated_scores(y, p, row_ids=None):
         valid = valid and (ids.ndim == 1 and len(ids) == len(y) and ids.dtype.kind in "iu"
                            and (ids >= 0).all() and len(np.unique(ids)) == len(ids))
     except (TypeError, ValueError, OverflowError) as error:
-        raise DomainError("ROW_INVALID", "Data evaluasi/probabilitas/row ID tidak valid.") from error
+        raise DomainError("ROW_INVALID", "Invalid evaluation data, probabilities, or row IDs.") from error
     if not valid:
-        raise DomainError("ROW_INVALID", "Data evaluasi/probabilitas/row ID tidak valid.")
+        raise DomainError("ROW_INVALID", "Invalid evaluation data, probabilities, or row IDs.")
     return y.astype(int), p.astype(float), ids
 
 
 def _unit_interval(value, code):
     if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, float, np.integer, np.floating)) or not np.isfinite(value) or not 0 <= value <= 1:
-        raise DomainError(code, "Nilai harus numeric finite antara 0 dan 1.")
+        raise DomainError(code, "Value must be finite and numeric between 0 and 1.")
 
 
 def threshold_for_f1(y, p) -> float:
@@ -62,7 +62,7 @@ def threshold_for_f1(y, p) -> float:
 def capacity_metrics(y, p, k, row_ids=None) -> dict:
     y, p, ids = _validated_scores(y, p, row_ids)
     if isinstance(k, (bool, np.bool_)) or not isinstance(k, (int, np.integer)) or not 0 <= k <= len(y):
-        raise DomainError("CAPACITY_INVALID", "K harus integer antara 0 dan jumlah baris.")
+        raise DomainError("CAPACITY_INVALID", "K must be an integer between 0 and the row count.")
     order = np.lexsort((ids, -p))
     total, prevalence = int(y.sum()), float(y.mean()) if len(y) else 0.0
     hits = int(y[order[:k]].sum())
@@ -78,7 +78,7 @@ def evaluate_scores(y, p, threshold=0.5, row_ids=None, q=None, *, k=None) -> dic
     y, p, row_ids = _validated_scores(y, p, row_ids)
     _unit_interval(threshold, "ROW_INVALID")
     if q is not None and k is not None:
-        raise DomainError("CAPACITY_INVALID", "Berikan hanya satu mode kapasitas: K atau q.")
+        raise DomainError("CAPACITY_INVALID", "Specify exactly one capacity mode: K or q.")
     if q is not None:
         _unit_interval(q, "CAPACITY_INVALID")
     capacity_k = k if k is not None else math.ceil((0.1 if q is None else q) * len(y))

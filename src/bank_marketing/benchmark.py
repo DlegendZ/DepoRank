@@ -56,6 +56,6 @@ def benchmark_run(run_id, root="artifacts"):
               "targets": {"NFR_03_startup_10s": startup <= 10, "NFR_04_single_1s": float(np.median(latencies)) <= 1,
                           "NFR_05_batch_15s": elapsed <= 15, "NFR_05_memory_4GB": max(memory) <= 4 * 1024**3,
                           "NFR_06_training_45min": manifest.get("training_seconds", float("inf")) <= 2700},
-              "notes": "Startup mengukur registry pada disk hangat; tidak termasuk cold Python/Streamlit startup. RSS polling 5ms bukan instrumentasi alokasi penuh."}
+              "notes": "Startup measures a warm-disk registry load, not cold Python/Streamlit startup. RSS sampling every 5 ms is not full allocation instrumentation."}
     write_json(path / "benchmark.json", report)
     return report

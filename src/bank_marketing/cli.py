@@ -27,7 +27,7 @@ from bank_marketing.storage import atomic_bytes, file_hash, read_json, write_jso
 
 
 def parser():
-    root = argparse.ArgumentParser(prog="bank-marketing", description="DepoRank: runner offline kampanye deposito")
+    root = argparse.ArgumentParser(prog="bank-marketing", description="DepoRank: offline term deposit campaign runner")
     commands = root.add_subparsers(dest="command", required=True)
     for name in ("ingest", "audit", "split", "train"):
         cmd = commands.add_parser(name)
@@ -64,20 +64,20 @@ def main(argv=None):
             return 3
         return 2
     except (ImportError, FileNotFoundError) as error:
-        print(json.dumps({"code": "MODEL_NOT_READY", "message": "Dependency atau berkas wajib belum tersedia.", "error_id": uuid.uuid4().hex}), file=sys.stderr)
+        print(json.dumps({"code": "MODEL_NOT_READY", "message": "Required dependency or file is unavailable.", "error_id": uuid.uuid4().hex}), file=sys.stderr)
         logging.error("CLI dependency failure: %s", type(error).__name__)
         return 3
     except Exception as error:
         error_id = uuid.uuid4().hex
         logging.exception("CLI internal error_id=%s", error_id)
-        print(json.dumps({"code": "INTERNAL_ERROR", "message": "Proses gagal; periksa log internal.", "error_id": error_id}), file=sys.stderr)
+        print(json.dumps({"code": "INTERNAL_ERROR", "message": "Process failed; check internal logs.", "error_id": error_id}), file=sys.stderr)
         return 1
 
 
 def _score_paths(args):
     output = Path(args.output).resolve()
     if output.suffix.lower() not in (".csv", ".json"):
-        raise DomainError("SCHEMA_INVALID", "Output scoring harus .csv atau .json.")
+        raise DomainError("SCHEMA_INVALID", "Scoring output must use .csv or .json.")
     paths = [output, output.with_suffix(".metadata.json")]
     if args.errors_output:
         paths.append(Path(args.errors_output).resolve())
@@ -88,7 +88,7 @@ def _score_paths(args):
                 or any(path.is_relative_to(root) for root in protected)
                 or path == Path("artifacts/active_run.json").resolve()
                 or any(path == other or (path.exists() and other.exists() and os.path.samefile(path, other)) for other in paths[:index])):
-            raise DomainError("SCHEMA_INVALID", "Output tidak boleh menimpa input, raw, manifest atau artefak model.")
+            raise DomainError("SCHEMA_INVALID", "Output must not overwrite input, raw data, manifests, or model artifacts.")
     return output, paths[1]
 def dispatch(args):
     if args.command in ("ingest", "audit", "split", "train"):
@@ -97,11 +97,11 @@ def dispatch(args):
             return ingest_dataset(args.source, destination=str(Path(config["dataset"]["path"]).parent))
         path = Path(config["dataset"]["path"])
         if file_hash(path) != config["dataset"]["sha256"]:
-            raise DomainError("DATASET_HASH_MISMATCH", "Checksum raw tidak sesuai konfigurasi.")
+            raise DomainError("DATASET_HASH_MISMATCH", "Raw dataset checksum does not match configuration.")
         data = pd.read_csv(path, sep=config["dataset"]["separator"], encoding="utf-8-sig")
         audit = audit_dataset(data, mode="training")
         if not audit["valid"]:
-            raise DomainError("SCHEMA_INVALID", "Audit dataset gagal.", audit["errors"])
+            raise DomainError("SCHEMA_INVALID", "Dataset audit failed.", audit["errors"])
         if args.command == "audit":
             write_json("data/manifests/audit.json", audit)
             return {"valid": True, "audit": "data/manifests/audit.json", "counts": audit["counts"]}
@@ -152,7 +152,7 @@ def dispatch(args):
         from bank_marketing.ml.interpretation import interpret_selection
         result = interpret_selection(args.run_id)
         return {"run_id": args.run_id, "split": "selection", "features": len(result["permutation_importance"]), "subgroups": len(result["subgroups"])}
-    raise DomainError("SCHEMA_INVALID", "Command tidak dikenal.")
+    raise DomainError("SCHEMA_INVALID", "Unknown command.")
 
 
 if __name__ == "__main__":

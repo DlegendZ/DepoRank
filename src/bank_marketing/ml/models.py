@@ -15,7 +15,7 @@ MODEL_CLASSES = {"logistic_regression": LogisticRegression, "gaussian_nb": Gauss
 
 def estimator_for(model_id, config):
     if model_id not in MODEL_CLASSES:
-        raise DomainError("SCHEMA_INVALID", "Model tidak dikenal.")
+        raise DomainError("SCHEMA_INVALID", "Unknown model.")
     return MODEL_CLASSES[model_id](**config["model_parameters"][model_id])
 
 

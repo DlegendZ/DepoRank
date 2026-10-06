@@ -9,7 +9,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from bank_marketing.ui.pages import render_app
 
 st.set_page_config(
-    page_title="DepoRank | Analisis Kampanye",
+    page_title="DepoRank | Campaign Analytics",
     page_icon="D",
     layout="wide",
     initial_sidebar_state="expanded",

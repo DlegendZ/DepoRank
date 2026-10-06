@@ -18,7 +18,7 @@ def evaluate_final(run_id, root="artifacts"):
     registry = Registry(root)
     path = registry.run_path(run_id)
     if (path / "test_evaluation.json").exists() or (path / "test_attempt.json").exists():
-        raise DomainError("TEST_ALREADY_EVALUATED", "Final test tidak boleh dijalankan ulang atau ditimpa.")
+        raise DomainError("TEST_ALREADY_EVALUATED", "Final test must not be rerun or overwritten.")
     registry.verify_run(run_id)
     lock = read_json(path / "selection_lock.json")
     data, config = load_run_data(path)

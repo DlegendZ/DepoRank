@@ -48,10 +48,10 @@ def load_run_data(path):
     manifest = read_json(path / "run_manifest.json")
     config = yaml.safe_load((path / "config_resolved.yaml").read_text(encoding="utf-8"))
     if object_hash(config) != manifest["config_sha256"]:
-        raise DomainError("ARTIFACT_INTEGRITY_ERROR", "Konfigurasi run telah berubah.")
+        raise DomainError("ARTIFACT_INTEGRITY_ERROR", "Run configuration has changed.")
     source = Path(config["dataset"]["path"])
     if not source.is_file() or file_hash(source) != manifest["dataset_sha256"]:
-        raise DomainError("DATASET_HASH_MISMATCH", "Raw dataset tidak cocok dengan run.")
+        raise DomainError("DATASET_HASH_MISMATCH", "Raw dataset does not match the run.")
     data = pd.read_csv(source, sep=";", encoding="utf-8-sig")
     return data, config
 
@@ -75,15 +75,15 @@ def train_models(dataset, config, run_id=None, root="artifacts"):
     data = dataset.copy() if isinstance(dataset, pd.DataFrame) else pd.read_csv(dataset, sep=";", encoding="utf-8-sig")
     source = Path(config["dataset"]["path"])
     if not source.exists() or file_hash(source) != config["dataset"]["sha256"]:
-        raise DomainError("DATASET_HASH_MISMATCH", "Dataset checksum tidak cocok.")
+        raise DomainError("DATASET_HASH_MISMATCH", "Dataset checksum does not match.")
     report = audit_dataset(data, mode="training")
     if not report["valid"]:
-        raise DomainError("SCHEMA_INVALID", "Audit training gagal.", report["errors"])
+        raise DomainError("SCHEMA_INVALID", "Training audit failed.", report["errors"])
     if len(data) != config["dataset"]["expected_rows"]:
-        raise DomainError("DATASET_VARIANT_MISMATCH", "Jumlah baris dataset tidak cocok.")
+        raise DomainError("DATASET_VARIANT_MISMATCH", "Dataset row count does not match.")
     source_data = pd.read_csv(source, sep=";", encoding="utf-8-sig")
     if not data.reset_index(drop=True).equals(source_data):
-        raise DomainError("DATASET_HASH_MISMATCH", "Training harus mempertahankan nilai dan urutan raw terverifikasi.")
+        raise DomainError("DATASET_HASH_MISMATCH", "Training must preserve verified raw values and row order.")
     if run_id is None:
         run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ_") + uuid.uuid4().hex[:8]
     path = Registry(root).run_path(run_id)
@@ -128,7 +128,7 @@ def train_models(dataset, config, run_id=None, root="artifacts"):
                 warnings.simplefilter("always", ConvergenceWarning)
                 search.fit(X, y)
             if any(issubclass(w.category, ConvergenceWarning) for w in captured):
-                raise DomainError("TRAINING_FAILED", "Model tidak konvergen; run dihentikan.", {"model_id": model_id})
+                raise DomainError("TRAINING_FAILED", "Model did not converge; run stopped.", {"model_id": model_id})
             model_dir = path / "models" / model_id
             save_model(model_dir / "base_pipeline.joblib", search.best_estimator_)
             base = search.best_estimator_

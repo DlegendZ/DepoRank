@@ -23,6 +23,6 @@ def verify_prediction_parity(run_id, root="artifacts"):
             saved = pd.read_csv(path / "predictions" / f"{split}_{model_id}.csv")
             difference = float(np.max(np.abs(scores - saved.p_yes.to_numpy())))
             if not np.array_equal(saved.row_id.to_numpy(), np.arange(*ranges[split])) or not np.allclose(scores, saved.p_yes, atol=1e-8, rtol=0):
-                raise DomainError("ARTIFACT_INTEGRITY_ERROR", "Prediksi reproduksi berbeda dari baseline tersimpan.")
+                raise DomainError("ARTIFACT_INTEGRITY_ERROR", "Reproduced predictions differ from the saved baseline.")
             checks.append({"split": split, "model_id": model_id, "max_absolute_difference": difference, "atol": 1e-8})
     return {"run_id": run_id, "status": "identical_within_tolerance", "checks": checks, "read_only": True}
