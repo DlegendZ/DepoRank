@@ -1,0 +1,9 @@
+{
+  "run_id": "20261005T141242Z_4ac2cd71",
+  "sha256": "3d04b0484bd9c9fbe0532994acc4a6e34f44a4324974e596fb8e50172f1cf2bc",
+  "compressed_bytes": 32745439,
+  "uncompressed_bytes": 170515166,
+  "files": 127,
+  "status": "tested",
+  "note": "Original hash-locked evidence preserved byte for byte. Charts carry English labels; run logs are omitted."
+}
