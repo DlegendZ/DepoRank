@@ -347,7 +347,7 @@ Chapter 4 Implementation and Evaluation
 
 # Software verification and local performance
 
-The recorded software validation contains 244 passing tests, 0 failures, 0 errors, and 0 skipped tests. Runtime was 36.04 seconds. The evidence summary is reports/software_quality.json. Software test success is not a claim about prediction quality or production readiness.
+The recorded software validation contains 246 passing tests, 0 failures, 0 errors, and 0 skipped tests. Runtime was 46.26 seconds. The evidence summary is reports/software_quality.json. Software test success is not a claim about prediction quality or production readiness.
 
 | Verification area | Examples covered |
 | --- | --- |

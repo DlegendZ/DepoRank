@@ -2,6 +2,8 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import runpy
+from types import SimpleNamespace
 import zipfile
 
 import pytest
@@ -12,6 +14,23 @@ ROOT = Path(__file__).resolve().parents[2]
 specification = importlib.util.spec_from_file_location("restore_demo", ROOT / "scripts/restore_demo.py")
 restore_demo = importlib.util.module_from_spec(specification)
 specification.loader.exec_module(restore_demo)
+
+def test_default_test_temp_parent_exists_in_fresh_checkout(tmp_path):
+    configure = runpy.run_path(ROOT / "tests/conftest.py")["pytest_configure"]
+    configuration = SimpleNamespace(rootpath=tmp_path / "fresh", option=SimpleNamespace(basetemp=None))
+    configure(configuration)
+    selected = Path(configuration.option.basetemp)
+    assert selected.parent == configuration.rootpath / ".pytest_cache"
+    assert selected.parent.is_dir()
+    selected.mkdir()
+
+def test_explicit_test_temp_path_is_preserved(tmp_path):
+    configure = runpy.run_path(ROOT / "tests/conftest.py")["pytest_configure"]
+    selected = str(tmp_path / "custom")
+    configuration = SimpleNamespace(rootpath=tmp_path / "fresh", option=SimpleNamespace(basetemp=selected))
+    configure(configuration)
+    assert configuration.option.basetemp == selected
+    assert not (configuration.rootpath / ".pytest_cache").exists()
 
 
 @pytest.fixture
