@@ -5,9 +5,17 @@ __pycache__/
 *.egg-info/
 .env
 .env.*
-data/raw/
+data/raw/*
+!data/raw/bank-additional-full.csv
+!data/raw/bank-additional-names.txt
 data/uploads/
 artifacts/
-.openhands/memory/
+.openhands/
 reports/figures/
 *.log
+.build/
+.chart-data-*/
+tmp/
+submission/
+docs/*.docx
+docs/Studi Kasus*.pdf
