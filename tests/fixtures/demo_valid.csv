@@ -1,0 +1,5 @@
+record_id;age;job;marital;education;default;housing;loan;pdays;previous;poutcome
+synthetic-001;35;admin.;married;university.degree;no;yes;no;999;0;nonexistent
+synthetic-002;48;technician;single;professional.course;unknown;no;no;0;1;success
+synthetic-003;22;student;single;high.school;no;unknown;unknown;7;2;failure
+synthetic-004;72;retired;divorced;basic.4y;no;no;no;999;0;nonexistent
